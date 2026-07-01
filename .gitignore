@@ -1,0 +1,4 @@
+node_modules/
+mockup/node_modules/
+mockup/dist/
+.DS_Store

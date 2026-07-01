@@ -1,0 +1,10 @@
+{
+  "name": "app-package-starter",
+  "private": true,
+  "scripts": {
+    "postinstall": "npm install --prefix mockup",
+    "dev": "npm run dev --prefix mockup",
+    "build": "npm run build --prefix mockup",
+    "preview": "npm run preview --prefix mockup"
+  }
+}

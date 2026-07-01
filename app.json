@@ -1,0 +1,234 @@
+{
+  "specVersion": "1.3.0",
+  "appId": "your-app-id",
+  "status": "draft",
+  "identity": {
+    "appName": "TODO: Your App Name",
+    "tagline": "TODO: Short hook for hero and ads",
+    "badgeText": "Coming soon to the App Store",
+    "description": "TODO: One paragraph describing what the app does and the core value proposition (10–500 characters).",
+    "category": "productivity",
+    "platform": "ios",
+    "tags": []
+  },
+  "audience": {
+    "primary": "TODO: Describe your primary target audience in one or two sentences.",
+    "landingPhrase": "TODO: Short phrase for the landing Built for line",
+    "secondary": "TODO: Optional secondary audience.",
+    "painPoints": [
+      "TODO: First problem your app solves",
+      "TODO: Second problem your app solves"
+    ]
+  },
+  "commerce": {
+    "pricing": {
+      "model": "subscription",
+      "currency": "USD",
+      "amount": 0,
+      "period": "monthly",
+      "trialDays": 7,
+      "headlineLabel": "Get for"
+    },
+    "cta": {
+      "primaryText": "Buy Now",
+      "secondaryText": "TODO: Secondary CTA",
+      "buyNowText": "Buy Now on the App Store",
+      "waitlistText": "Keep Me Updated",
+      "emailPlaceholder": "Enter your email"
+    }
+  },
+  "branding": {
+    "theme": {
+      "mode": "light",
+      "landingStyle": "liquid-glass",
+      "primaryColor": "#2563EB",
+      "accentColor": "#7C3AED",
+      "accentName": "violet",
+      "fontFamily": "Inter, system-ui, sans-serif"
+    },
+    "style": {
+      "tone": "professional",
+      "styleNotes": "TODO: Visual and writing guidance for designers and AI."
+    }
+  },
+  "mockup": {
+    "type": "interactive",
+    "sourcePath": "mockup/",
+    "framework": "react-vite",
+    "entryPoint": "mockup/src/App.jsx",
+    "installCommand": "npm install",
+    "buildCommand": "npm run build",
+    "devCommand": "npm run dev",
+    "deployCommand": "npx vercel deploy --prod",
+    "baseWidth": 375,
+    "baseHeight": 820,
+    "clipBottomPx": 0,
+    "previewUrl": null,
+    "notes": "TODO: Notes for mockup build and deploy."
+  },
+  "media": {
+    "icon": { "path": "media/icon.png", "alt": "TODO: App icon alt text" },
+    "logo": { "path": "media/logo.png", "alt": "TODO: Logo alt text" },
+    "ogImage": { "path": "media/og-image.png", "alt": "TODO: Social share image alt text" },
+    "screenshots": [
+      {
+        "path": "media/screenshots/01-home.png",
+        "alt": "TODO: Welcome screen",
+        "title": "TODO: Screenshot 1 title",
+        "description": "TODO: Screenshot 1 caption."
+      },
+      {
+        "path": "media/screenshots/02-feature.png",
+        "alt": "TODO: Feature screen",
+        "title": "TODO: Screenshot 2 title",
+        "description": "TODO: Screenshot 2 caption."
+      },
+      {
+        "path": "media/screenshots/03-results.png",
+        "alt": "TODO: Results screen",
+        "title": "TODO: Screenshot 3 title",
+        "description": "TODO: Screenshot 3 caption."
+      }
+    ]
+  },
+  "landingPage": {
+    "slug": "your-app-id",
+    "sections": [
+      { "id": "hero", "enabled": true, "source": "file", "file": "copy/hero.md" },
+      { "id": "features", "enabled": true, "source": "file", "file": "copy/features.md" },
+      { "id": "screenshots", "enabled": true, "source": "media" },
+      {
+        "id": "socialProof",
+        "enabled": false,
+        "source": "inline",
+        "inline": {
+          "headline": "TODO: Social proof headline",
+          "body": "TODO: Testimonials or beta feedback."
+        }
+      },
+      {
+        "id": "pricing",
+        "enabled": true,
+        "source": "inline",
+        "inline": {
+          "headline": "Simple pricing",
+          "subheadline": "TODO: Pricing fine print."
+        }
+      },
+      { "id": "faq", "enabled": true, "source": "file", "file": "copy/faq.md" },
+      {
+        "id": "cta",
+        "enabled": true,
+        "source": "inline",
+        "inline": {
+          "headline": "TODO: Email capture headline",
+          "subheadline": "TODO: Email capture subheadline",
+          "placeholder": "Enter your email"
+        }
+      },
+      {
+        "id": "footer",
+        "enabled": true,
+        "source": "inline",
+        "inline": {
+          "body": "TODO: © Year App Name. Privacy · Terms · Contact"
+        }
+      }
+    ],
+    "seo": {
+      "title": "TODO: SEO title",
+      "description": "TODO: Meta description for search and social previews.",
+      "keywords": []
+    }
+  },
+  "ads": {
+    "campaignName": "your-app-id-validation",
+    "objective": "conversions",
+    "platforms": ["facebook", "instagram"],
+    "headlines": [
+      "TODO: Ad headline variant A",
+      "TODO: Ad headline variant B"
+    ],
+    "primaryTexts": [
+      "TODO: Primary ad text variant A (≤125 chars)."
+    ],
+    "descriptions": [
+      "TODO: Short ad description."
+    ],
+    "callToAction": "SIGN_UP",
+    "utmTemplate": {
+      "source": "facebook",
+      "medium": "paid_social",
+      "campaign": "{{appId}}-validation"
+    }
+  },
+  "tracking": {
+    "webhookUrl": null,
+    "webhooks": {
+      "validationComplete": null,
+      "deployComplete": null,
+      "emailCaptured": null,
+      "buyNowClicked": null
+    },
+    "events": [
+      { "name": "page_view", "description": "Landing page viewed" },
+      { "name": "email_captured", "description": "User submitted email on landing page" },
+      { "name": "buy_now_clicked", "description": "User clicked purchase CTA" },
+      { "name": "mockup_interacted", "description": "User opened or interacted with live mockup preview" }
+    ]
+  },
+  "analytics": {
+    "projectId": "proj_your-app-id",
+    "experimentId": "exp_your-app-id_001",
+    "experimentRunId": "run_your-app-id_001",
+    "landingVariantId": "v1",
+    "mockupVersionId": "v1",
+    "funnelName": "validation_funnel",
+    "customDimensions": {
+      "category": "productivity",
+      "platform": "ios"
+    }
+  },
+  "experiment": {
+    "experimentName": "TODO: Your App — Validation Run",
+    "hypothesis": "TODO: We believe [audience] will [action] because [reason].",
+    "successCriteria": [
+      "TODO: Measurable success outcome 1",
+      "TODO: Measurable success outcome 2"
+    ],
+    "testBudget": {
+      "currency": "USD",
+      "amount": 0,
+      "durationDays": 14
+    },
+    "decisionRules": {
+      "winnerThreshold": "TODO: Rule for promoting to winner",
+      "killThreshold": "TODO: Rule for killing the experiment",
+      "minSampleSize": 100,
+      "notes": "TODO: Manual review guidance."
+    }
+  },
+  "deployment": {
+    "mockup": {
+      "vercelProjectId": null,
+      "url": null,
+      "lastDeployedAt": null
+    },
+    "landing": {
+      "vercelProjectId": null,
+      "url": null,
+      "deploymentUrl": null,
+      "lastDeployedAt": null
+    },
+    "githubRepoUrl": null
+  },
+  "appStore": {
+    "subtitle": "TODO: App Store subtitle",
+    "keywords": [],
+    "promotionalText": "TODO: Promotional text.",
+    "description": "TODO: Full App Store description.",
+    "appStoreUrl": null,
+    "supportUrl": null,
+    "privacyPolicyUrl": null
+  }
+}
