@@ -208,6 +208,13 @@
       "notes": "TODO: Manual review guidance."
     }
   },
+  "source": {
+    "mockupGithubRepo": "TODO: your-org/your-app-id-mockup",
+    "mockupBranch": "main",
+    "mockupRootDirectory": "mockup",
+    "vercelMockupProjectId": null,
+    "vercelMockupProjectName": "TODO: your-vercel-project-name"
+  },
   "deployment": {
     "mockup": {
       "vercelProjectId": null,
