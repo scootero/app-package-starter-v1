@@ -1,5 +1,5 @@
 {
-  "specVersion": "1.3.0",
+  "specVersion": "1.4.0",
   "appId": "your-app-id",
   "status": "draft",
   "identity": {
@@ -160,6 +160,23 @@
       "source": "facebook",
       "medium": "paid_social",
       "campaign": "{{appId}}-validation"
+    },
+    "targeting": {
+      "locations": ["United States"],
+      "ageMin": 25,
+      "ageMax": 55,
+      "interests": []
+    },
+    "meta": {
+      "status": null,
+      "campaignId": null,
+      "adSetId": null,
+      "creativeId": null,
+      "adId": null,
+      "landingUrl": null,
+      "dailyBudget": null,
+      "createdAt": null,
+      "lastSyncedAt": null
     }
   },
   "tracking": {
@@ -206,6 +223,11 @@
       "killThreshold": "TODO: Rule for killing the experiment",
       "minSampleSize": 100,
       "notes": "TODO: Manual review guidance."
+    },
+    "thresholds": {
+      "minClicks": 100,
+      "minSignupRate": 0.05,
+      "maxCostPerSignup": 10
     }
   },
   "source": {
@@ -219,6 +241,7 @@
     "mockup": {
       "vercelProjectId": null,
       "url": null,
+      "deploymentUrl": null,
       "lastDeployedAt": null
     },
     "landing": {
@@ -228,6 +251,21 @@
       "lastDeployedAt": null
     },
     "githubRepoUrl": null
+  },
+  "validation": {
+    "lastCheckedAt": null,
+    "metrics": {
+      "spend": null,
+      "impressions": null,
+      "clicks": null,
+      "ctr": null,
+      "cpc": null,
+      "signups": null,
+      "signupRate": null,
+      "costPerSignup": null
+    },
+    "recommendation": null,
+    "latestReportFile": null
   },
   "appStore": {
     "subtitle": "TODO: App Store subtitle",

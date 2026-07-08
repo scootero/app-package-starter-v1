@@ -2,9 +2,11 @@
 
 Reusable scaffold for a new app validation idea. Copy this folder, rename it to your `appId`, and fill in TODO placeholders.
 
-**Spec:** [app-validation-spec](../app-validation-spec/APP_PACKAGE_SPEC.md) v1.3.0  
+**Spec:** [app-validation-spec](../app-validation-spec/APP_PACKAGE_SPEC.md) v1.4.0  
+**Workflow index:** [n8n-workflows/README.md](../n8n-workflows/README.md)  
 **Reference package:** [test-app-packages/human-lab](../test-app-packages/human-lab/)  
 **Landing transform:** [landing-template/scripts/APP_PACKAGE_TRANSFORM.md](../landing-template/scripts/APP_PACKAGE_TRANSFORM.md)  
+**WF0 blueprint:** [n8n-workflows/WF0-PROVISIONING-PIPELINE-BLUEPRINT.md](../n8n-workflows/WF0-PROVISIONING-PIPELINE-BLUEPRINT.md)  
 **WF1 blueprint:** [n8n-workflows/WF1-DEPLOY-PIPELINE-BLUEPRINT.md](../n8n-workflows/WF1-DEPLOY-PIPELINE-BLUEPRINT.md)
 
 ## How to copy
@@ -31,9 +33,20 @@ npm run dev
 
 Read [START_HERE.md](START_HERE.md) before using Cursor to generate content.
 
+## Values needed before WF0
+
+When the package is complete, set `status: "provisioning"` and run **WF0** to provision `tracking.webhookUrl` and promote to `ready`.
+
+| # | Value | Where to put it |
+|---|-------|-----------------|
+| 1 | Full `experiment` section | `experiment.*` |
+| 2 | Analytics IDs | `analytics.projectId`, `experimentId`, `experimentRunId`, variant IDs |
+| 3 | Ad copy + optional targeting | `ads.*`, `ads.targeting` |
+| 4 | Status to trigger WF0 | `"status": "provisioning"` |
+
 ## Values needed before WF1
 
-Collect these **up front** before running WF1 mockup deploy:
+Collect these **up front** before running WF1 mockup deploy (after WF0 has set `status: ready` in production):
 
 | # | Value | Where to put it |
 |---|-------|-----------------|
@@ -44,17 +57,17 @@ Collect these **up front** before running WF1 mockup deploy:
 | 5 | Mockup root directory in repo | `source.mockupRootDirectory` (e.g. `mockup`) |
 | 6 | Vercel mockup project ID or name | `source.vercelMockupProjectId` and/or `source.vercelMockupProjectName` |
 | 7 | Drive package location | Upload folder to `App Validation/{appId}/` (parent folder ID in n8n Config Set) |
-| 8 | Status before WF1 | `"status": "ready"` when package + infra are complete |
+| 8 | Status before WF1 | `"status": "ready"` (set by WF0 after provisioning, or manually for early WF1 testing) |
 | 9 | Customize from starter | See [What to customize](#what-to-customize) below |
-| 10 | Leave null until automation | `deployment.*`, `mockup.previewUrl`, `tracking.webhookUrl` |
+| 10 | Leave null until automation | `deployment.*`, `mockup.previewUrl`, `tracking.webhookUrl` (WF0 writes webhook), `ads.meta`, `validation` |
 | 11 | Secrets | **Never** in `app.json` — Vercel/Google tokens go in **n8n Credentials** only |
 
 ### One-time infrastructure checklist (before first WF1 run)
 
 1. **GitHub:** Create repo; push `mockup/` code to `source.mockupBranch`.
 2. **Vercel:** Create project → import GitHub repo → set Root Directory = `source.mockupRootDirectory` → deploy once manually.
-3. **Drive:** Upload `{appId}/` to `App Validation/`; fill `source.*` in `app.json`; set `status: "ready"`.
-4. **n8n:** Run WF1 manual trigger with `appId`.
+3. **Drive:** Upload `{appId}/` to `App Validation/`; fill `source.*` in `app.json`; run WF0 or set `status: "ready"` for early testing.
+4. **n8n:** Run WF0 (provisioning) then WF1 manual trigger with `appId`.
 
 ## What to customize
 
