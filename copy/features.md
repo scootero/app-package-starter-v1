@@ -1,5 +1,7 @@
 # Features
 
+Optional local authoring aid. Convert into `landingPage.content.features` before Drive sync.
+
 ## Feature 1
 
 **Title:** TODO: Feature one title

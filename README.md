@@ -2,21 +2,48 @@
 
 Reusable scaffold for a new app validation idea. Copy this folder, rename it to your `appId`, and fill in TODO placeholders.
 
-**Spec:** [app-validation-spec](../app-validation-spec/APP_PACKAGE_SPEC.md) v1.4.0  
+**Spec:** [app-validation-spec](../app-validation-spec/APP_PACKAGE_SPEC.md) v1.5.0  
 **Workflow index:** [n8n-workflows/README.md](../n8n-workflows/README.md)  
 **Reference package:** [test-app-packages/human-lab](../test-app-packages/human-lab/)  
 **Landing transform:** [landing-template/scripts/APP_PACKAGE_TRANSFORM.md](../landing-template/scripts/APP_PACKAGE_TRANSFORM.md)  
 **WF0 blueprint:** [n8n-workflows/WF0-PROVISIONING-PIPELINE-BLUEPRINT.md](../n8n-workflows/WF0-PROVISIONING-PIPELINE-BLUEPRINT.md)  
 **WF1 blueprint:** [n8n-workflows/WF1-DEPLOY-PIPELINE-BLUEPRINT.md](../n8n-workflows/WF1-DEPLOY-PIPELINE-BLUEPRINT.md)
 
+## Author Provision Checklist
+
+### What Cursor must ask
+
+App name, `appId`, tagline, audience, pain points, features, benefits, pricing/CTAs, theme, mockup flow, screenshot captions, FAQ, experiment hypothesis/budget, ad copy, and GitHub/Vercel `source.*` values. See [START_HERE.md](START_HERE.md) for the full table.
+
+### What the human must provision
+
+| Item | Detail |
+|------|--------|
+| Full GitHub app repo | `mockup/` (Vercel root), `media/`, package/Vite files; **no** `node_modules/` or `dist/` |
+| Vercel project | Root Directory = `mockup` (`source.mockupRootDirectory`) |
+| Google Drive | Upload **`app.json` ONLY** to `App Validation/{appId}/` |
+
+Do not upload `copy/`, `media/`, `mockup/`, or `docs/` to Drive. Local `copy/*.md` are authoring aids — convert into `landingPage.content` + inline sections before Drive sync.
+
+### What stays null for automation
+
+| Field | Owner |
+|-------|-------|
+| `tracking.webhookUrl` | WF0 |
+| `deployment.mockup.*`, `mockup.previewUrl` | WF1 |
+| `deployment.landing.*`, `deployment.githubRepoUrl` | WF2 |
+| `ads.meta.*` | WF-Ads |
+| `validation.*` | WF-Decision |
+
 ## How to copy
 
-1. Duplicate this folder to `test-app-packages/{appId}/` (or your Google Drive app folder).
+1. Duplicate this folder to `test-app-packages/{appId}/` (or your local working tree).
 2. Rename the folder to match `appId` (kebab-case, e.g. `focus-timer`).
 3. Replace every `your-app-id` in `app.json`, analytics IDs, and ad campaign names.
-4. Fill TODO fields in `app.json`, `copy/`, and `docs/`.
-5. Customize `mockup/src/App.jsx` for your screens.
-6. Run from package root:
+4. Fill TODO fields in `app.json` (including `landingPage.content` and inline sections).
+5. Optionally draft in `copy/*.md`, then convert into `app.json` before Drive sync.
+6. Customize `mockup/src/App.jsx` for your screens.
+7. Run from package root:
 
 ```bash
 npm install
@@ -24,7 +51,7 @@ npm run dev
 npm run build
 ```
 
-7. Preview landing page (from `landing-template/`):
+8. Preview landing page (from `landing-template/`):
 
 ```bash
 node scripts/generate-app-config.js ../test-app-packages/{appId}
@@ -41,145 +68,105 @@ When the package is complete, set `status: "provisioning"` and run **WF0** to pr
 |---|-------|-----------------|
 | 1 | Full `experiment` section | `experiment.*` |
 | 2 | Analytics IDs | `analytics.projectId`, `experimentId`, `experimentRunId`, variant IDs |
-| 3 | Ad copy + optional targeting | `ads.*`, `ads.targeting` |
-| 4 | Status to trigger WF0 | `"status": "provisioning"` |
+| 3 | Ad copy + optional targeting | `ads.*`, `ads.targeting` (not `ads.meta`) |
+| 4 | Inline landing + `githubPath` media | `landingPage`, `media`, optional `ads.media` |
+| 5 | Status to trigger WF0 | `"status": "provisioning"` |
 
 ## Values needed before WF1
 
-Collect these **up front** before running WF1 mockup deploy (after WF0 has set `status: ready` in production):
-
 | # | Value | Where to put it |
 |---|-------|-----------------|
-| 1 | `appId` (kebab-case, folder name) | Root `appId` field; folder name must match |
+| 1 | `appId` (kebab-case) | Root `appId`; Drive folder name must match |
 | 2 | App display name | `identity.appName` |
-| 3 | GitHub repo for mockup (`org/repo`) | `source.mockupGithubRepo` |
+| 3 | Full app GitHub repo (`org/repo`) | `source.mockupGithubRepo` |
 | 4 | GitHub branch | `source.mockupBranch` (e.g. `main`) |
-| 5 | Mockup root directory in repo | `source.mockupRootDirectory` (e.g. `mockup`) |
+| 5 | Mockup root directory | `source.mockupRootDirectory` → **`mockup`** |
 | 6 | Vercel mockup project ID or name | `source.vercelMockupProjectId` and/or `source.vercelMockupProjectName` |
-| 7 | Drive package location | Upload folder to `App Validation/{appId}/` (parent folder ID in n8n Config Set) |
-| 8 | Status before WF1 | `"status": "ready"` (set by WF0 after provisioning, or manually for early WF1 testing) |
-| 9 | Customize from starter | See [What to customize](#what-to-customize) below |
-| 10 | Leave null until automation | `deployment.*`, `mockup.previewUrl`, `tracking.webhookUrl` (WF0 writes webhook), `ads.meta`, `validation` |
-| 11 | Secrets | **Never** in `app.json` — Vercel/Google tokens go in **n8n Credentials** only |
+| 7 | Drive control file | Upload **only** `app.json` to `App Validation/{appId}/` |
+| 8 | Status before WF1 | `"status": "ready"` (set by WF0) |
+| 9 | Leave null until automation | See checklist above |
+| 10 | Secrets | **Never** in `app.json` — tokens in **n8n Credentials** only |
 
-### One-time infrastructure checklist (before first WF1 run)
+### One-time infrastructure checklist
 
-1. **GitHub:** Create repo; push `mockup/` code to `source.mockupBranch`.
-2. **Vercel:** Create project → import GitHub repo → set Root Directory = `source.mockupRootDirectory` → deploy once manually.
-3. **Drive:** Upload `{appId}/` to `App Validation/`; fill `source.*` in `app.json`; run WF0 or set `status: "ready"` for early testing.
-4. **n8n:** Run WF0 (provisioning) then WF1 manual trigger with `appId`.
+1. **GitHub:** Create full app repo; push `mockup/` + `media/`; ignore `node_modules/` and `dist/`.
+2. **Vercel:** Import repo → Root Directory = `mockup` → deploy once manually.
+3. **Drive:** Upload **only** `app.json`; fill `source.*`; set `status: "provisioning"` for WF0.
+4. **n8n:** Run WF0, then WF1 with `appId`.
 
 ## What to customize
 
 | Area | Files / fields |
 |------|----------------|
 | Identity & audience | `app.json` → `identity`, `audience`, `commerce`, `branding` |
-| Landing structure | `app.json` → `landingPage`, `copy/*.md` |
-| Experiment & ads | `app.json` → `experiment`, `ads`, `analytics` |
+| Landing structure & copy | `app.json` → `landingPage.content`, `landingPage.sections` (inline) |
+| Experiment & ads | `app.json` → `experiment`, `ads` (copy/targeting), `analytics` |
 | Mockup UI | `mockup/src/App.jsx`, `mockup/` assets |
-| Media | `media/*`, paths in `app.json` → `media` |
-| Deploy infrastructure | `app.json` → `source.*` (human sets before WF1) |
-| Internal planning | `docs/` (not validated by pipeline) |
+| Media | GitHub `media/*`; refs via `githubPath` in `app.json` |
+| Deploy infrastructure | `app.json` → `source.*` |
+| Local authoring aids | `copy/*.md` → convert before Drive sync |
+| Internal planning | `docs/` (not pipeline input) |
 
-## What automation writes later (leave null)
-
-| Field | Written by |
-|-------|------------|
-| `deployment.mockup.vercelProjectId` | WF1 |
-| `deployment.mockup.url` | WF1 |
-| `deployment.mockup.lastDeployedAt` | WF1 |
-| `mockup.previewUrl` | WF1 (must equal `deployment.mockup.url`) |
-| `deployment.landing.*` | WF2 (future) |
-| `tracking.webhookUrl` | WF3 (future) |
-
-Do not put API tokens, PATs, or service account JSON in `app.json`.
-
-## Folder layout
+## Folder layout (local / GitHub)
 
 ```txt
 {appId}/
 ├── START_HERE.md       # Cursor onboarding — read first
 ├── README.md           # This file
-├── app.json            # Canonical manifest
+├── app.json            # Canonical manifest — ONLY file synced to Drive
 ├── package.json        # Delegates to mockup/
-├── copy/               # Landing copy (consumed by transform)
+├── copy/               # Optional local authoring aid (not on Drive)
 ├── docs/               # Internal planning (not validated)
-├── media/              # Icons, screenshots, OG image
-└── mockup/             # React + Vite interactive prototype
+├── media/              # Binaries; referenced via githubPath
+└── mockup/             # React + Vite prototype (Vercel root)
 ```
 
-Internal folder names stay **generic** (`copy/`, `media/`, `mockup/`) for every app. Record framework in `app.json` → `mockup.framework` only.
+**Production Drive:** `App Validation/{appId}/app.json` only.
 
 ## How n8n will consume this
 
-### WF1 v1 (mockup deploy only)
+### WF0 → WF1 → WF2 → WF-Ads → WF-Decision
 
-When `status` is `ready` and `source.*` is populated, **WF1** will:
+| Workflow | Reads | Writes |
+|----------|-------|--------|
+| **WF0** | Complete package at `provisioning` | `tracking.webhookUrl`, `status` → `ready` |
+| **WF1** | `source.*` | `deployment.mockup.*`, `mockup.previewUrl` |
+| **WF2** | `landingPage`, media refs, mockup URL | `deployment.landing.*`, `deployment.githubRepoUrl` |
+| **WF-Ads** | `ads` copy + targeting, creatives | `ads.meta.*`, `status` → `validating` |
+| **WF-Decision** | Meta + Sheets | `validation.*`, terminal `status` |
 
-1. Read `{appId}/app.json` from Google Drive (manual trigger with `appId`)
-2. Validate `source.*` mockup deploy metadata
-3. Trigger Vercel deployment API against the pre-provisioned project (GitHub → Vercel build)
-4. Merge-write `deployment.mockup.*` and `mockup.previewUrl` back to Drive `app.json`
-5. Leave `status` as `ready`
+WF1 does **not** create GitHub repos, create Vercel projects, or download package folders from Drive.
 
-WF1 does **not** create GitHub repos, create Vercel projects, download `mockup/` from Drive, deploy landing, provision webhooks, or write Google Sheets.
-
-### Future workflows
-
-| Workflow | Scope |
-|----------|-------|
-| **WF2** | Landing transform + deploy → `deployment.landing.*` |
-| **WF3** | Webhooks + Google Sheets analytics |
-| **WF-Ads** | Meta ads from `ads.*` |
-
-Lifecycle for full pipeline: `draft` → `provisioning` → `ready` → `validating` → `winner` / `killed` / `built`.
-
-For **WF1 v1**, you may set `status: ready` directly when the package and mockup infrastructure are ready — `tracking.webhookUrl` is not a WF1 gate.
+Lifecycle: `draft` → `provisioning` → `ready` → `validating` → `winner` / `killed` / `built`.
 
 ## How the landing transform consumes this
 
-`landing-template/scripts/generate-app-config.js` **translates** package data only — it does not own app-specific content.
+`landing-template/scripts/generate-app-config.js` **translates** package data only.
 
 | Package source | Landing config |
 |----------------|----------------|
-| `app.json` | Identity, audience, commerce, branding, sections, SEO, webhooks |
-| `copy/hero.md` | Hero headline, subheadline, body |
-| `copy/benefits.md` | Benefit bullets |
-| `copy/features.md` | Features list |
-| `copy/faq.md` | FAQ items |
-| `media/screenshots/*.png` | Screenshot gallery |
+| `app.json` sections | Identity, audience, commerce, branding, SEO, webhooks |
+| `landingPage.content` | Benefits, features, FAQ, testimonials |
+| `landingPage.sections[].inline` | Hero, CTA, pricing headlines, etc. |
+| `media.screenshots` (`githubPath` / `url`) | Screenshot gallery |
 
-Never hardcode landing copy in the transform script.
+Local `copy/*.md` is a local-dev fallback only. Never hardcode landing copy in the transform script.
 
 ## Screenshots
 
-1. Declare paths in `app.json` → `media.screenshots`
-2. Place PNGs in `media/screenshots/` (see [media/screenshots/README.md](media/screenshots/README.md))
+1. Declare `githubPath` in `app.json` → `media.screenshots`
+2. Place PNGs in GitHub `media/screenshots/`
 3. Capture from mockup at ~375px width: welcome → feature → result
-4. Re-run the transform to copy images into `landing-template/app-data/images/`
-
-## Webhook placeholders (WF3 — not required for WF1)
-
-| Field | Role |
-|-------|------|
-| `tracking.webhookUrl` | **Canonical** unified landing-event webhook (WF3 provisions) |
-| `tracking.webhooks.validationComplete` | Package passes validation |
-| `tracking.webhooks.deployComplete` | Mockup and landing page are live |
-| `tracking.webhooks.emailCaptured` | Legacy fallback for `email_captured` |
-| `tracking.webhooks.buyNowClicked` | Legacy fallback for `buy_now_clicked` |
-
-Landing events use `eventType` (`page_view`, `buy_now_clicked`, `email_captured`, `mockup_interacted`) in the webhook payload.
+4. Re-run the transform to fetch declared assets into `landing-template/app-data/images/`
 
 ## Draft → ready checklist
 
-Before setting `status` to `ready` for WF1:
+1. Replace all TODO placeholders in `app.json` (inline content + `landingPage.content`)
+2. Complete `experiment`, `ads` copy, and analytics IDs
+3. Use `githubPath` (or `url`) for every media asset; optional `ads.media`
+4. Verify mockup builds: `npm run build`
+5. Provision GitHub full app repo + Vercel (`mockup` root); fill `source.*`
+6. Upload **only** `app.json` to Drive `App Validation/{appId}/`
+7. Set `status: provisioning` for WF0
 
-1. Replace all TODO placeholders in `app.json` and `copy/`
-2. Complete `experiment` (hypothesis, budget, success criteria, decision rules)
-3. Complete `ads` and analytics IDs (`experimentRunId`, `landingVariantId`, `mockupVersionId`)
-4. Add real screenshot PNGs matching `media.screenshots` paths
-5. Verify mockup builds: `npm run build`
-6. Provision GitHub repo + Vercel project; fill `source.*`
-7. Upload package to Drive `App Validation/{appId}/`
-
-Keep `status` as `draft` until the package content and deploy infrastructure are complete.
+Keep `status` as `draft` until content and deploy infrastructure are complete.

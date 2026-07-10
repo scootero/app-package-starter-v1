@@ -1,12 +1,12 @@
 {
-  "specVersion": "1.4.0",
+  "specVersion": "1.5.0",
   "appId": "your-app-id",
   "status": "draft",
   "identity": {
     "appName": "TODO: Your App Name",
     "tagline": "TODO: Short hook for hero and ads",
     "badgeText": "Coming soon to the App Store",
-    "description": "TODO: One paragraph describing what the app does and the core value proposition (10–500 characters).",
+    "description": "TODO: One paragraph describing what the app does and the core value proposition (10\u2013500 characters).",
     "category": "productivity",
     "platform": "ios",
     "tags": []
@@ -67,36 +67,66 @@
     "notes": "TODO: Notes for mockup build and deploy."
   },
   "media": {
-    "icon": { "path": "media/icon.png", "alt": "TODO: App icon alt text" },
-    "logo": { "path": "media/logo.png", "alt": "TODO: Logo alt text" },
-    "ogImage": { "path": "media/og-image.png", "alt": "TODO: Social share image alt text" },
+    "icon": {
+      "alt": "TODO: App icon alt text",
+      "githubPath": "media/icon.png"
+    },
+    "logo": {
+      "alt": "TODO: Logo alt text",
+      "githubPath": "media/logo.png"
+    },
+    "ogImage": {
+      "alt": "TODO: Social share image alt text",
+      "githubPath": "media/og-image.png"
+    },
     "screenshots": [
       {
-        "path": "media/screenshots/01-home.png",
         "alt": "TODO: Welcome screen",
         "title": "TODO: Screenshot 1 title",
-        "description": "TODO: Screenshot 1 caption."
+        "description": "TODO: Screenshot 1 caption.",
+        "githubPath": "media/screenshots/01-home.png"
       },
       {
-        "path": "media/screenshots/02-feature.png",
         "alt": "TODO: Feature screen",
         "title": "TODO: Screenshot 2 title",
-        "description": "TODO: Screenshot 2 caption."
+        "description": "TODO: Screenshot 2 caption.",
+        "githubPath": "media/screenshots/02-feature.png"
       },
       {
-        "path": "media/screenshots/03-results.png",
         "alt": "TODO: Results screen",
         "title": "TODO: Screenshot 3 title",
-        "description": "TODO: Screenshot 3 caption."
+        "description": "TODO: Screenshot 3 caption.",
+        "githubPath": "media/screenshots/03-results.png"
       }
     ]
   },
   "landingPage": {
     "slug": "your-app-id",
     "sections": [
-      { "id": "hero", "enabled": true, "source": "file", "file": "copy/hero.md" },
-      { "id": "features", "enabled": true, "source": "file", "file": "copy/features.md" },
-      { "id": "screenshots", "enabled": true, "source": "media" },
+      {
+        "id": "hero",
+        "enabled": true,
+        "source": "inline",
+        "inline": {
+          "headline": "TODO: Your main headline",
+          "subheadline": "TODO: Supporting line that expands on the headline.",
+          "body": "TODO: Optional longer hero paragraph."
+        }
+      },
+      {
+        "id": "features",
+        "enabled": true,
+        "source": "inline",
+        "inline": {
+          "headline": "TODO: Features headline",
+          "subheadline": "TODO: Features subheadline"
+        }
+      },
+      {
+        "id": "screenshots",
+        "enabled": true,
+        "source": "media"
+      },
       {
         "id": "socialProof",
         "enabled": false,
@@ -115,7 +145,14 @@
           "subheadline": "TODO: Pricing fine print."
         }
       },
-      { "id": "faq", "enabled": true, "source": "file", "file": "copy/faq.md" },
+      {
+        "id": "faq",
+        "enabled": true,
+        "source": "inline",
+        "inline": {
+          "headline": "Frequently asked questions"
+        }
+      },
       {
         "id": "cta",
         "enabled": true,
@@ -131,7 +168,7 @@
         "enabled": true,
         "source": "inline",
         "inline": {
-          "body": "TODO: © Year App Name. Privacy · Terms · Contact"
+          "body": "TODO: \u00a9 Year App Name. Privacy \u00b7 Terms \u00b7 Contact"
         }
       }
     ],
@@ -139,18 +176,73 @@
       "title": "TODO: SEO title",
       "description": "TODO: Meta description for search and social previews.",
       "keywords": []
+    },
+    "content": {
+      "benefits": [
+        {
+          "title": "TODO: First benefit headline",
+          "description": "TODO: One sentence describing the benefit.",
+          "icon": "sparkles"
+        },
+        {
+          "title": "TODO: Second benefit headline",
+          "description": "TODO: One sentence describing the benefit.",
+          "icon": "check"
+        },
+        {
+          "title": "TODO: Third benefit headline",
+          "description": "TODO: One sentence describing the benefit.",
+          "icon": "star"
+        }
+      ],
+      "features": [
+        {
+          "title": "TODO: Feature one title",
+          "description": "TODO: Brief description of what this feature does and the benefit to the user."
+        },
+        {
+          "title": "TODO: Feature two title",
+          "description": "TODO: Brief description of what this feature does and the benefit to the user."
+        },
+        {
+          "title": "TODO: Feature three title",
+          "description": "TODO: Brief description of what this feature does and the benefit to the user."
+        }
+      ],
+      "faq": [
+        {
+          "question": "TODO: First question?",
+          "answer": "TODO: Answer to the first question."
+        },
+        {
+          "question": "TODO: Second question?",
+          "answer": "TODO: Answer to the second question."
+        },
+        {
+          "question": "TODO: How much does it cost?",
+          "answer": "TODO: Pricing answer \u2014 align with commerce.pricing."
+        },
+        {
+          "question": "TODO: What platforms are supported?",
+          "answer": "TODO: Platform answer \u2014 align with identity.platform."
+        }
+      ],
+      "testimonials": []
     }
   },
   "ads": {
     "campaignName": "your-app-id-validation",
     "objective": "conversions",
-    "platforms": ["facebook", "instagram"],
+    "platforms": [
+      "facebook",
+      "instagram"
+    ],
     "headlines": [
       "TODO: Ad headline variant A",
       "TODO: Ad headline variant B"
     ],
     "primaryTexts": [
-      "TODO: Primary ad text variant A (≤125 chars)."
+      "TODO: Primary ad text variant A (\u2264125 chars)."
     ],
     "descriptions": [
       "TODO: Short ad description."
@@ -162,7 +254,9 @@
       "campaign": "{{appId}}-validation"
     },
     "targeting": {
-      "locations": ["United States"],
+      "locations": [
+        "United States"
+      ],
       "ageMin": 25,
       "ageMax": 55,
       "interests": []
@@ -177,7 +271,14 @@
       "dailyBudget": null,
       "createdAt": null,
       "lastSyncedAt": null
-    }
+    },
+    "media": [
+      {
+        "githubPath": "media/og-image.png",
+        "alt": "TODO: Social share image alt text",
+        "role": "primary"
+      }
+    ]
   },
   "tracking": {
     "webhookUrl": null,
@@ -188,10 +289,22 @@
       "buyNowClicked": null
     },
     "events": [
-      { "name": "page_view", "description": "Landing page viewed" },
-      { "name": "email_captured", "description": "User submitted email on landing page" },
-      { "name": "buy_now_clicked", "description": "User clicked purchase CTA" },
-      { "name": "mockup_interacted", "description": "User opened or interacted with live mockup preview" }
+      {
+        "name": "page_view",
+        "description": "Landing page viewed"
+      },
+      {
+        "name": "email_captured",
+        "description": "User submitted email on landing page"
+      },
+      {
+        "name": "buy_now_clicked",
+        "description": "User clicked purchase CTA"
+      },
+      {
+        "name": "mockup_interacted",
+        "description": "User opened or interacted with live mockup preview"
+      }
     ]
   },
   "analytics": {
@@ -207,7 +320,7 @@
     }
   },
   "experiment": {
-    "experimentName": "TODO: Your App — Validation Run",
+    "experimentName": "TODO: Your App \u2014 Validation Run",
     "hypothesis": "TODO: We believe [audience] will [action] because [reason].",
     "successCriteria": [
       "TODO: Measurable success outcome 1",
@@ -265,7 +378,8 @@
       "costPerSignup": null
     },
     "recommendation": null,
-    "latestReportFile": null
+    "latestReportFile": null,
+    "latestReportUrl": null
   },
   "appStore": {
     "subtitle": "TODO: App Store subtitle",

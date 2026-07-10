@@ -1,5 +1,7 @@
 # Hero
 
+Optional local authoring aid. Convert into `landingPage.sections[hero].inline` before Drive sync (Spec 1.5.0).
+
 ## Headline
 
 TODO: Your main headline (≤120 characters).

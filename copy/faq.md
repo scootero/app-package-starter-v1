@@ -1,5 +1,7 @@
 # FAQ
 
+Optional local authoring aid. Convert into `landingPage.content.faq` before Drive sync.
+
 ## TODO: First question?
 
 TODO: Answer to the first question.

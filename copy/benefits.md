@@ -1,6 +1,6 @@
 # Benefits
 
-Short value propositions for the hero bullet list and benefit grid. Loaded by the landing transform from this file — not from `app.json`.
+Optional local authoring aid. Convert into `landingPage.content.benefits` in `app.json` before Drive sync (Spec 1.5.0).
 
 ## Benefit 1
 
