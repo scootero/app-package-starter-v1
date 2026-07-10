@@ -347,6 +347,9 @@
     "mockupGithubRepo": "TODO: your-org/your-app-id-mockup",
     "mockupBranch": "main",
     "mockupRootDirectory": "mockup",
+    "assetsGithubRepo": null,
+    "assetsBranch": null,
+    "assetsRootDirectory": "",
     "vercelMockupProjectId": null,
     "vercelMockupProjectName": "TODO: your-vercel-project-name"
   },

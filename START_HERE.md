@@ -38,8 +38,11 @@ Before generating or editing files, collect answers for:
 | Ad headlines and angles | `ads.*` (copy + targeting only) |
 | Full app GitHub repo (`org/repo`) | `source.mockupGithubRepo` |
 | GitHub branch | `source.mockupBranch` |
+| Optional separate assets repo/branch/root | `source.assetsGithubRepo`, `source.assetsBranch`, `source.assetsRootDirectory` |
 | Mockup root directory | `source.mockupRootDirectory` → **`mockup`** |
 | Vercel mockup project ID or name | `source.vercelMockupProjectId`, `source.vercelMockupProjectName` |
+| Landing GitHub repo/project naming | WF2 setup values (normally `{org}/{appId}-landing` and `{appId}-landing`) |
+| Vercel landing project ID/name after setup | WF2 setup values; written to `deployment.landing.*` after deploy |
 
 ### What the human must provision
 
@@ -49,7 +52,8 @@ Before generating or editing files, collect answers for:
    - Root/package/Vite files as needed
    - **Never** commit `node_modules/` or `dist/`
 2. **Vercel project** linked to that repo with Root Directory = `mockup`
-3. **Google Drive:** upload **`app.json` ONLY** to `App Validation/{appId}/`  
+3. **WF2 landing GitHub repo** (empty or seeded from landing-template) and **Vercel landing project** with Root Directory unset/default repository root. Create these only after approval for external setup.
+4. **Google Drive:** upload **`app.json` ONLY** to `App Validation/{appId}/`  
    Do **not** upload `copy/`, `media/`, `mockup/`, `docs/`, README, or lockfiles to Drive
 
 ### What stays null for automation
@@ -78,7 +82,7 @@ Production Drive packages must use `source: "inline"` (or `media` for screenshot
 ### Single source of truth (production)
 
 - **Drive control plane:** `app.json` only (`landingPage.content` + `sections[].inline` + `githubPath` media refs)
-- **GitHub:** mockup source, media binaries, package/Vite files
+- **GitHub:** mockup source, media binaries, package/Vite files, and generated per-app landing repos
 - **Never** hardcode app-specific copy into `landing-template/scripts/generate-app-config.js`
 - The landing transform **translates** package data → `app-config.json` only
 
@@ -96,6 +100,7 @@ Production Drive packages must use `source: "inline"` (or `media` for screenshot
 - No backend — client-only prototype
 - Commands from **package root**: `npm install`, `npm run dev`, `npm run build`
 - Push mockup code to `source.mockupGithubRepo` before WF1
+- Push every declared `media.*.githubPath` asset to `source.assetsGithubRepo ?? source.mockupGithubRepo` before WF2
 
 ### Copy file formats (local authoring only)
 
@@ -134,10 +139,12 @@ npm run dev          # preview landing page
 ## Draft → provisioning → ready
 
 1. Complete package content, inline landing copy, and `source.*`
-2. Provision GitHub full app repo + Vercel project (Root Directory = `mockup`)
+2. Provision GitHub full app repo + Vercel mockup project (Root Directory = `mockup`)
 3. Upload **only** `app.json` to Drive `App Validation/{appId}/`
 4. Set `status: provisioning` → **WF0** writes `tracking.webhookUrl` and sets `ready`
-5. Then WF1 → WF2 → WF-Ads → WF-Decision
+5. Run WF1 and verify public mockup alias
+6. Provision the WF2 landing repo + Vercel landing project after approval; Vercel Root Directory must be empty/default repository root
+7. Then WF2 → WF-Ads → WF-Decision
 
 ## Reference
 

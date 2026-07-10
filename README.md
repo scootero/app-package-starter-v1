@@ -21,6 +21,7 @@ App name, `appId`, tagline, audience, pain points, features, benefits, pricing/C
 |------|--------|
 | Full GitHub app repo | `mockup/` (Vercel root), `media/`, package/Vite files; **no** `node_modules/` or `dist/` |
 | Vercel project | Root Directory = `mockup` (`source.mockupRootDirectory`) |
+| WF2 landing repo/project | Landing repo and Vercel project created after approval; Vercel Root Directory = repository root/default |
 | Google Drive | Upload **`app.json` ONLY** to `App Validation/{appId}/` |
 
 Do not upload `copy/`, `media/`, `mockup/`, or `docs/` to Drive. Local `copy/*.md` are authoring aids — convert into `landingPage.content` + inline sections before Drive sync.
@@ -92,7 +93,8 @@ When the package is complete, set `status: "provisioning"` and run **WF0** to pr
 1. **GitHub:** Create full app repo; push `mockup/` + `media/`; ignore `node_modules/` and `dist/`.
 2. **Vercel:** Import repo → Root Directory = `mockup` → deploy once manually.
 3. **Drive:** Upload **only** `app.json`; fill `source.*`; set `status: "provisioning"` for WF0.
-4. **n8n:** Run WF0, then WF1 with `appId`.
+4. **n8n:** Run WF0, then WF1 with `appId`; verify the public mockup URL.
+5. **WF2 setup:** After approval, create the landing repo/project, then let WF2 push the generated landing repo and deploy it.
 
 ## What to customize
 
@@ -131,11 +133,12 @@ When the package is complete, set `status: "provisioning"` and run **WF0** to pr
 |----------|-------|--------|
 | **WF0** | Complete package at `provisioning` | `tracking.webhookUrl`, `status` → `ready` |
 | **WF1** | `source.*` | `deployment.mockup.*`, `mockup.previewUrl` |
-| **WF2** | `landingPage`, media refs, mockup URL | `deployment.landing.*`, `deployment.githubRepoUrl` |
+| **WF2** | `landingPage`, media refs, mockup URL, prepared landing repo/project | `deployment.landing.*`, `deployment.githubRepoUrl` |
 | **WF-Ads** | `ads` copy + targeting, creatives | `ads.meta.*`, `status` → `validating` |
 | **WF-Decision** | Meta + Sheets | `validation.*`, terminal `status` |
 
 WF1 does **not** create GitHub repos, create Vercel projects, or download package folders from Drive.
+WF2 reads Drive `app.json` only, resolves declared `url`/`githubPath` assets, pushes generated landing source to the prepared landing repo, deploys the prepared Vercel project, and writes only landing deployment fields.
 
 Lifecycle: `draft` → `provisioning` → `ready` → `validating` → `winner` / `killed` / `built`.
 
@@ -157,7 +160,7 @@ Local `copy/*.md` is a local-dev fallback only. Never hardcode landing copy in t
 1. Declare `githubPath` in `app.json` → `media.screenshots`
 2. Place PNGs in GitHub `media/screenshots/`
 3. Capture from mockup at ~375px width: welcome → feature → result
-4. Re-run the transform to fetch declared assets into `landing-template/app-data/images/`
+4. Re-run the transform/WF2 asset step to fetch declared assets into generated `app-data/images/`
 
 ## Draft → ready checklist
 

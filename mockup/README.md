@@ -42,10 +42,8 @@ npm run preview
 
 The landing page embeds the deployed mockup with `?embed=1`. `App.jsx` detects iframe/embed mode and adjusts layout.
 
-## Deploy (future n8n)
+## Deploy (WF1)
 
-1. Run `installCommand` and `buildCommand`
-2. Deploy `mockup/dist/` (e.g. Vercel)
-3. Write `mockup.previewUrl`, `deployment.mockup.url`, `deployment.mockup.vercelProjectId`, and `deployment.mockup.lastDeployedAt` back to `app.json`
+WF1 does not run npm or deploy `mockup/dist/` from n8n. It reads `source.*` from Drive `app.json`, triggers the prepared Vercel mockup project via GitHub `gitSource`, polls until ready, then merge-writes `mockup.previewUrl`, `deployment.mockup.url`, `deployment.mockup.deploymentUrl`, `deployment.mockup.vercelProjectId`, and `deployment.mockup.lastDeployedAt`.
 
 The landing page never imports mockup source — only the deployed URL.
