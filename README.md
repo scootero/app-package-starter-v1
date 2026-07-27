@@ -13,7 +13,9 @@ Reusable scaffold for a new app validation idea. Copy this folder, rename it to 
 
 ### What Cursor must ask
 
-App name, `appId`, tagline, audience, pain points, features, benefits, pricing/CTAs, theme, mockup flow, screenshot captions, FAQ, experiment hypothesis/budget, ad copy, and GitHub/Vercel `source.*` values. See [START_HERE.md](START_HERE.md) for the full table.
+App name, `appId`, tagline, **`identity.contactEmail`**, **`identity.privacyEffectiveDate`**, audience, pain points, features, benefits, pricing/CTAs, theme, mockup flow, screenshot captions, FAQ (use `[Privacy Policy](/privacy)` when linking the policy), experiment hypothesis/budget, ad copy, and GitHub/Vercel `source.*` values. See [START_HERE.md](START_HERE.md) for the full table.
+
+Replace starter placeholders `your-privacy-email@example.com` and `privacyEffectiveDate` before Meta advertising. Footer copyright only — Privacy / Data Deletion / Contact links are provided by the landing template.
 
 ### What the human must provision
 

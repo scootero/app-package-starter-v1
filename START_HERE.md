@@ -23,6 +23,8 @@ Before generating or editing files, collect answers for:
 | App name (display) | `identity.appName` |
 | `appId` (kebab-case, Drive folder name) | `appId`, `landingPage.slug`, analytics IDs |
 | One-line tagline | `identity.tagline`, `sections[hero].inline` |
+| Public privacy / contact email | `identity.contactEmail` — **required before Meta ads**; used for footer Contact + `/privacy` / `/data-deletion` |
+| Privacy policy effective date (`YYYY-MM-DD`) | `identity.privacyEffectiveDate` — set when publishing Meta-required policy pages; do not invent at deploy time |
 | Target audience (primary + short landing phrase) | `audience.primary`, `audience.landingPhrase` |
 | Problems / pain points | `audience.painPoints`, hero body |
 | Core features (3–5) | `landingPage.content.features` |
@@ -114,12 +116,15 @@ Production Drive packages must use `source: "inline"` (or `media` for screenshot
 ### Proven app.json fields (spec 1.5.0)
 
 - `identity.badgeText`, `audience.landingPhrase`
+- `identity.contactEmail`, `identity.privacyEffectiveDate` (Meta / WF4 launch readiness when advertising)
 - `branding.theme.landingStyle`, `branding.theme.accentName`
 - `mockup.baseWidth`, `baseHeight`, `clipBottomPx`
 - `landingPage.content` + inline sections
 - `media.*.githubPath` (not `path` on Drive)
 - `validation.latestReportUrl` (nullable until WF-Decision)
 - `source.*` with `mockupRootDirectory: "mockup"`
+
+Landing template always ships `/privacy` and `/data-deletion` after WF2. Footer links (Privacy Policy, Data Deletion, Contact) come from the landing shell — keep `sections[footer].inline.body` as copyright text only. FAQ answers may use the safe link form `[Privacy Policy](/privacy)` only (no HTML).
 
 Keep `status: draft` until the package is complete and reviewed.
 

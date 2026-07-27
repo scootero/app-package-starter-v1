@@ -9,7 +9,9 @@
     "description": "TODO: One paragraph describing what the app does and the core value proposition (10\u2013500 characters).",
     "category": "productivity",
     "platform": "ios",
-    "tags": []
+    "tags": [],
+    "contactEmail": "your-privacy-email@example.com",
+    "privacyEffectiveDate": "2026-01-01"
   },
   "audience": {
     "primary": "TODO: Describe your primary target audience in one or two sentences.",
@@ -168,7 +170,7 @@
         "enabled": true,
         "source": "inline",
         "inline": {
-          "body": "TODO: \u00a9 Year App Name. Privacy \u00b7 Terms \u00b7 Contact"
+          "body": "TODO: \u00a9 Year App Name. All rights reserved."
         }
       }
     ],
@@ -221,6 +223,10 @@
         {
           "question": "TODO: How much does it cost?",
           "answer": "TODO: Pricing answer \u2014 align with commerce.pricing."
+        },
+        {
+          "question": "TODO: Is my data private?",
+          "answer": "TODO: Short privacy answer. Link the landing policy with [Privacy Policy](/privacy) (safe FAQ link syntax)."
         },
         {
           "question": "TODO: What platforms are supported?",
