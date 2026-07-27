@@ -153,7 +153,7 @@ Lifecycle: `draft` → `provisioning` → `ready` → `validating` → `winner` 
 | `app.json` sections | Identity, audience, commerce, branding, SEO, webhooks |
 | `landingPage.content` | Benefits, features, FAQ, testimonials |
 | `landingPage.sections[].inline` | Hero, CTA, pricing headlines, etc. |
-| `media.screenshots` (`githubPath` / `url`) | Screenshot gallery |
+| `media.screenshots` (`githubPath` / `url`) | Screenshot gallery (off by default via `landingPage.sections[screenshots].enabled: false`) |
 
 Local `copy/*.md` is a local-dev fallback only. Never hardcode landing copy in the transform script.
 
