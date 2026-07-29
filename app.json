@@ -276,7 +276,10 @@
       "landingUrl": null,
       "dailyBudget": null,
       "createdAt": null,
-      "lastSyncedAt": null
+      "lastSyncedAt": null,
+      "creativeRevision": null,
+      "currentVariant": null,
+      "variants": {}
     },
     "media": [
       {
