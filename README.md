@@ -35,8 +35,10 @@ Do not upload `copy/`, `media/`, `mockup/`, or `docs/` to Drive. Local `copy/*.m
 | `tracking.webhookUrl` | WF0 |
 | `deployment.mockup.*`, `mockup.previewUrl` | WF1 |
 | `deployment.landing.*`, `deployment.githubRepoUrl` | WF2 |
-| `ads.meta.*` | WF-Ads |
-| `validation.*` | WF-Decision |
+| `ads.meta.*` | WF4 / WF-Ads |
+| `validation.*` | WF-Decision (optional later) |
+
+**V1 ads defaults in this starter:** `ads.objective: "traffic"`, `ads.callToAction: "LEARN_MORE"` (matches proven WF4 create-paused).
 
 ## How to copy
 
@@ -90,13 +92,16 @@ When the package is complete, set `status: "provisioning"` and run **WF0** to pr
 | 9 | Leave null until automation | See checklist above |
 | 10 | Secrets | **Never** in `app.json` — tokens in **n8n Credentials** only |
 
-### One-time infrastructure checklist
+### Infrastructure checklist (per new app)
 
-1. **GitHub:** Create full app repo; push `mockup/` + `media/`; ignore `node_modules/` and `dist/`.
-2. **Vercel:** Import repo → Root Directory = `mockup` → deploy once manually.
-3. **Drive:** Upload **only** `app.json`; fill `source.*`; set `status: "provisioning"` for WF0.
-4. **n8n:** Run WF0, then WF1 with `appId`; verify the public mockup URL.
-5. **WF2 setup:** After approval, create the landing repo/project, then let WF2 push the generated landing repo and deploy it.
+1. **GitHub app repo:** Create `{org}/{appId}`; push this package (`mockup/` + `media/`); ignore `node_modules/` and `dist/`.
+2. **Vercel mockup:** Import that repo → Root Directory = `mockup` → deploy once; fill `source.vercelMockupProjectId` / `Name`.
+3. **Drive:** Upload **only** `app.json` to `App Validation/{appId}/`; set `status: "provisioning"`.
+4. **n8n WF0 → WF1:** Set Config `appId` to the same kebab-case id; run WF0 then WF1; verify public mockup URL.
+5. **Landing shells (before WF2):** Create empty GitHub `{org}/{appId}-landing` + Vercel project linked to it (Root Directory = repo root). WF2 pushes/deploys; you do not hand-build the site.
+6. **n8n WF2 → smoke WF3 → WF4:** Run WF2; open landing and confirm events hit the Sheet (WF3); dry_run then create-paused WF4; activate only in Ads Manager.
+
+Full step table: [START_HERE.md](START_HERE.md#operator-path-duplicate-this-folder--live-ads).
 
 ## What to customize
 
@@ -129,20 +134,22 @@ When the package is complete, set `status: "provisioning"` and run **WF0** to pr
 
 ## How n8n will consume this
 
-### WF0 → WF1 → WF2 → WF-Ads → WF-Decision
+### WF0 → WF1 → WF2 → WF3 → WF4 → (optional WF-Decision)
 
 | Workflow | Reads | Writes |
 |----------|-------|--------|
 | **WF0** | Complete package at `provisioning` | `tracking.webhookUrl`, `status` → `ready` |
 | **WF1** | `source.*` | `deployment.mockup.*`, `mockup.previewUrl` |
 | **WF2** | `landingPage`, media refs, mockup URL, prepared landing repo/project | `deployment.landing.*`, `deployment.githubRepoUrl` |
-| **WF-Ads** | `ads` copy + targeting, creatives | `ads.meta.*`, `status` → `validating` |
-| **WF-Decision** | Meta + Sheets | `validation.*`, terminal `status` |
+| **WF3** | Landing webhook POSTs | Google Sheets rows (runtime; not `app.json`) |
+| **WF4 / WF-Ads** | `ads` copy + targeting, creatives | `ads.meta.*` / variants (create-paused stays **PAUSED**) |
+| **WF-Decision** | Meta + Sheets (future) | `validation.*`, terminal `status` |
 
 WF1 does **not** create GitHub repos, create Vercel projects, or download package folders from Drive.
 WF2 reads Drive `app.json` only, resolves declared `url`/`githubPath` assets, pushes generated landing source to the prepared landing repo, deploys the prepared Vercel project, and writes only landing deployment fields.
+WF3 is shared platform tracking — **not** a second package to duplicate.
 
-Lifecycle: `draft` → `provisioning` → `ready` → `validating` → `winner` / `killed` / `built`.
+Lifecycle: `draft` → `provisioning` → `ready` → (optional `validating`) → `winner` / `killed` / `built`.
 
 ## How the landing transform consumes this
 

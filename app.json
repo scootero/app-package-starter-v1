@@ -238,7 +238,7 @@
   },
   "ads": {
     "campaignName": "your-app-id-validation",
-    "objective": "conversions",
+    "objective": "traffic",
     "platforms": [
       "facebook",
       "instagram"
@@ -253,7 +253,7 @@
     "descriptions": [
       "TODO: Short ad description."
     ],
-    "callToAction": "SIGN_UP",
+    "callToAction": "LEARN_MORE",
     "utmTemplate": {
       "source": "facebook",
       "medium": "paid_social",

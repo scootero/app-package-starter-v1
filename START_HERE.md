@@ -65,8 +65,8 @@ Before generating or editing files, collect answers for:
 | `tracking.webhookUrl` | **WF0** |
 | `deployment.mockup.*`, `mockup.previewUrl` | **WF1** |
 | `deployment.landing.*`, `deployment.githubRepoUrl` | **WF2** |
-| `ads.meta.*` | **WF-Ads** |
-| `validation.*` (metrics, recommendation, `latestReportUrl`) | **WF-Decision** |
+| `ads.meta.*` | **WF4 / WF-Ads** |
+| `validation.*` (metrics, recommendation, `latestReportUrl`) | **WF-Decision** (optional later) |
 
 Secrets never go in `app.json` — API tokens live in n8n Credentials only.
 
@@ -141,19 +141,52 @@ node scripts/generate-app-config.js ../test-app-packages/{appId}
 npm run dev          # preview landing page
 ```
 
-## Draft → provisioning → ready
+## Operator path (duplicate this folder → live ads)
 
-1. Complete package content, inline landing copy, and `source.*`
-2. Provision GitHub full app repo + Vercel mockup project (Root Directory = `mockup`)
-3. Upload **only** `app.json` to Drive `App Validation/{appId}/`
-4. Set `status: provisioning` → **WF0** writes `tracking.webhookUrl` and sets `ready`
-5. Run WF1 and verify public mockup alias
-6. Provision the WF2 landing repo + Vercel landing project after approval; Vercel Root Directory must be empty/default repository root
-7. Then WF2 → WF-Ads → WF-Decision
+You do **not** open other “project templates.” Duplicate **this** package, push code/assets to GitHub, create empty Vercel shells, put `app.json` on Drive, then run existing n8n workflows with `appId`.
+
+### A. Package (this folder only)
+
+1. Copy `app-package-starter` → `test-app-packages/{appId}/` (or your working tree); rename to `{appId}`
+2. Fill `app.json` + `mockup/` + `media/` (Cursor uses this file)
+3. Default V1 ads: `ads.objective: "traffic"`, `ads.callToAction: "LEARN_MORE"` (proven Meta pairing)
+4. Keep `ads.meta.*` null for automation; author copy in `ads.headlines` / `primaryTexts` / `descriptions` (arrays OK — WF4 create-paused currently uses `[0]` only; polish extras in Ads Manager)
+
+### B. GitHub + Vercel shells (human, empty projects OK)
+
+| Shell | Typical name | Vercel Root Directory |
+|-------|--------------|------------------------|
+| **App / mockup repo** | `{org}/{appId}` — push this whole package (`mockup/`, `media/`, …) | **`mockup`** |
+| **Landing repo** | `{org}/{appId}-landing` — leave empty; WF2 pushes generated site | **repo root** (unset) |
+
+Create matching Vercel projects linked to each repo. Put mockup project id/name in `source.vercelMockupProjectId` / `source.vercelMockupProjectName`.
+
+### C. Drive
+
+- Folder: `App Validation/{appId}/`
+- Upload **only** `app.json`
+- Set `"status": "provisioning"` when ready for WF0
+
+### D. Run workflows (same n8n workflows every app — change `appId`)
+
+| Order | Workflow | You set | What it does |
+|-------|----------|---------|--------------|
+| 1 | **WF0** | Config `appId` | Writes shared `tracking.webhookUrl`, sets `ready` |
+| 2 | **WF1** | Config `appId` | Deploys mockup; writes `deployment.mockup.*` |
+| 3 | **WF2** | Config `appId` (+ landing targets if required) | Pushes landing into `{appId}-landing`, deploys, writes `deployment.landing.*` |
+| 4 | **WF3** | Nothing per app if shared webhook already live | Landing events → Google Sheet (smoke-test in browser) |
+| 5 | **WF4** | Config `appId` / creatives; dry_run first; create-paused only with approval phrase | Creates **PAUSED** Meta ads; writes `ads.meta.*` / variants |
+| — | Ads Manager | You | Preview, optional multi-text polish, **activate** spend, pause when done |
+| — | WF-Decision | Not required yet | Future kill/scale automation |
+
+**WF3 is not a separate package to duplicate** — it is the already-running tracking receiver. New apps reuse the shared webhook; WF3 tells apps apart from event payload fields (`appId`, experiment IDs, UTMs).
+
+**Ending state:** leave ads **PAUSED** from WF4; you turn them on in Ads Manager.
 
 ## Reference
 
 - Spec: [app-validation-spec/APP_PACKAGE_SPEC.md](../app-validation-spec/APP_PACKAGE_SPEC.md)
-- WF0–WF-Decision blueprints: [n8n-workflows/](../n8n-workflows/)
+- WF0–WF4 blueprints / exports: [n8n-workflows/](../n8n-workflows/)
 - Working example: [test-app-packages/human-lab](../test-app-packages/human-lab/)
 - Transform docs: [landing-template/scripts/APP_PACKAGE_TRANSFORM.md](../landing-template/scripts/APP_PACKAGE_TRANSFORM.md)
+- Follow-ups (multi-copy Meta, etc.): [../NEED_TO_DO.md](../NEED_TO_DO.md)
